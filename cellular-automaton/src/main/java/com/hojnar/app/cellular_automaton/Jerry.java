@@ -65,8 +65,9 @@ public class Jerry
 			}
 			else if(energy < 0) sleep();
 			else think(app);
-			//if(((Main) app).generationTickCounter % 50 == 0 && ((Main) app).generationTickCounter != 0) score += 100;
-			score++;
+			App a = (App) app;
+			if(a.generationTickCounter % 10 == 0 && a.generationTickCounter != 0) score += 5;
+			//score++;
 			hunger++;
 			
 			app.circle(this.pos.x*map.gridScale, this.pos.y*map.gridScale, map.gridScale/3);
