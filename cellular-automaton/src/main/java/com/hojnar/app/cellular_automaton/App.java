@@ -319,7 +319,7 @@ public class App extends PApplet
 		index--;
 		Jerry j = savedJerries.get(index);
 		Jerry child = new Jerry(randomPos(), j.maxHealth, j.maxEnergy, j.brain, this, map);
-		child.mutate(mutateAmount);
+		child.mutate(mutateAmount, mutIntensity);
 		return child;
 	}
 	
@@ -337,7 +337,7 @@ public class App extends PApplet
 		}
 		Jerry best = savedJerries.remove(highestIndex);
 		Jerry child = new Jerry(randomPos(), best.maxHealth, best.maxEnergy, best.brain, this, map);
-		child.mutate(mutateAmount);
+		child.mutate(mutateAmount, mutIntensity);
 		return child;
 	}
 

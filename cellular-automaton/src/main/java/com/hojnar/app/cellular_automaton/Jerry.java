@@ -196,10 +196,10 @@ public class Jerry
 	
 	void mutate()
 	{
-		mutate(0.2f);
+		mutate(0.8, 0.2);
 	}
-	void mutate(double value)
+	void mutate(double value, double intensity)
 	{
-		brain.mutate(value);
+		brain.mutate(value, intensity);
 	}
 }
