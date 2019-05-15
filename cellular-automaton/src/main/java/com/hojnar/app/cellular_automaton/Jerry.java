@@ -12,16 +12,16 @@ public class Jerry
 	float fitness;
 	boolean dead, sleeping;
 	Tile currentTile;
-	Brain brain;
+	SimpleBrain brain;
 	Map map;
 	
 	
-	public Jerry(PVector pos, float maxHealth, float maxEnergy, NeuralNetwork brain, PApplet app, Map map)
+	public Jerry(PVector pos, float maxHealth, float maxEnergy, SimpleBrain brain, PApplet app, Map map)
 	{
 		if(brain != null)
-			this.brain = brain.copy();
+			this.brain = new SimpleBrain(brain);
 		else
-			this.brain = new NeuralNetwork(INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES, app);
+			this.brain = new SimpleBrain(INPUT_NODES, HIDDEN_NODES, OUTPUT_NODES);
 		this.pos = pos;
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
