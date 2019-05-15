@@ -22,7 +22,7 @@ public class App extends PApplet
 	boolean isOpener;
 	boolean run, running, started;
 	
-	float mutateAmount;
+	double mutateAmount;
 	Slider mutateSlider;
 	Label mutateLabel;
 	
@@ -31,7 +31,7 @@ public class App extends PApplet
 	
 	public static void main(String[] args)
 	{
-		PApplet.main("cellularautomaton.Main");
+		PApplet.main("com.hojnar.app.cellular_automaton.App");
 	}
 	
 	public void settings()
@@ -142,7 +142,7 @@ public class App extends PApplet
 		gui.addElement(mapsButton);
 		
 		mutateSlider = new Slider(20, 240, 160, 0.1f, 0.9f, () -> updateGuiElements(), true);
-		mutateLabel = new Label(100, 225, 14, "Mutation Amount: " + mutateAmount);
+		mutateLabel = new Label(100, 225, 14, String.format("Mutation Amount: %.2f", mutateAmount));
 		
 		gui.addElements(new GuiElement[] {mutateSlider,mutateLabel});
 	}
@@ -177,7 +177,7 @@ public class App extends PApplet
 		generationTickLabel.setLabel("Generation Tick: " + generationTickCounter + "/" + generationTicks);
 		generationNumberLabel.setLabel("Generation " + generationNumber);
 		mutateAmount = mutateSlider.getValue();
-		mutateLabel.setLabel("Mutatation Amount: " + mutateAmount);
+		mutateLabel.setLabel(String.format("Mutation Amount: %.2f", mutateAmount));
 	}
 	
 	public void draw()
@@ -294,7 +294,6 @@ public class App extends PApplet
 		}
 		int toGet = numJerries - jerries.size();
 		calculateFitness();
-		System.out.println(savedJerries.size());
 		for (int i = 0; i < toGet; i++){
 			jerries.add(pickOne());
 		}
@@ -306,7 +305,7 @@ public class App extends PApplet
 
 	Jerry pickOne(){
 		int index = 0;
-		float r = random(1);
+		double r = random(1);
 		while (r > 0) {
 			r -= savedJerries.get(index).fitness;
 			index++;
@@ -321,7 +320,7 @@ public class App extends PApplet
 	
 	Jerry getBest()
 	{
-		float highest = 0;
+		double highest = 0;
 		int highestIndex = 0;
 		for(int i = 0; i < savedJerries.size(); i++)
 		{
@@ -338,7 +337,7 @@ public class App extends PApplet
 	}
 
 	void calculateFitness(){
-		float sum = 0;
+		double sum = 0;
 		for (Jerry j : savedJerries){
 			sum += j.score;
 		}
@@ -346,5 +345,20 @@ public class App extends PApplet
 		for (Jerry j : savedJerries){
 			j.fitness = j.score/sum;
 		}
+	}
+	
+	int max(double[] array)
+	{
+		double highest = 0;
+		int index = 0;
+		for(int i = 0; i < array.length; i++)
+		{
+			if(array[i] > highest)
+			{
+				highest = array[i];
+				index = i;
+			}
+		}
+		return index;
 	}
 }

@@ -8,15 +8,15 @@ public class Jerry
 	final int INPUT_NODES = 13, HIDDEN_NODES = 40, OUTPUT_NODES = 7;
 	
 	PVector pos;
-	float health, maxHealth, energy, maxEnergy, hunger, maxHunger, food, maxFood, score;
-	float fitness;
+	double health, maxHealth, energy, maxEnergy, hunger, maxHunger, food, maxFood, score;
+	double fitness;
 	boolean dead, sleeping;
 	Tile currentTile;
 	SimpleBrain brain;
 	Map map;
 	
 	
-	public Jerry(PVector pos, float maxHealth, float maxEnergy, SimpleBrain brain, PApplet app, Map map)
+	public Jerry(PVector pos, double maxHealth, double maxEnergy, SimpleBrain brain, PApplet app, Map map)
 	{
 		if(brain != null)
 			this.brain = new SimpleBrain(brain);
@@ -75,7 +75,7 @@ public class Jerry
 	
 	void think(PApplet app)
 	{
-		float inputs[] = new float[this.brain.inputNodes];
+		double inputs[] = new double[this.brain.inputNodes];
 	    
 	    Tile up = this.pos.y != 0 ? map.tileAt(this.pos.x, this.pos.y-1) : null;
 	    Tile right = this.pos.x != map.grid.size()-1 ? map.tileAt(this.pos.x+1, this.pos.y) : null;
@@ -100,21 +100,21 @@ public class Jerry
 	    //inputs[15] = down != null ? (down.terrainType.terrainInt() / 3.0f) : 0;
 	    //inputs[16] = left != null ? (left.terrainType.terrainInt() / 3.0f) : 0;
 	    
-	    float output[] = this.brain.predict(inputs);
-	    float maxO = PApplet.max(output);
-	    if(maxO == output[0])
+	    double output[] = this.brain.predict(inputs);
+	    int maxO = ((App) app).max(output);
+	    if(maxO == 0)
 	        this.move(Direction.NORTH);
-	    else if(maxO == output[1])
+	    else if(maxO == 1)
 	        this.move(Direction.EAST);
-	    else if(maxO == output[2])
+	    else if(maxO == 2)
 	        this.move(Direction.SOUTH);
-	    else if(maxO == output[3])
+	    else if(maxO == 3)
 	        this.move(Direction.WEST);
-	    else if(maxO == output[4])
+	    else if(maxO == 4)
 	        this.sleep();
-	    else if(maxO == output[5])
+	    else if(maxO == 5)
 	        this.harvest();
-	    else if(maxO == output[6])
+	    else if(maxO == 6)
 	        this.eat();
 	}
 	
@@ -171,18 +171,17 @@ public class Jerry
 	
 	public void harvest()
 	{
-		float foodTaken = (currentTile.food > 5) ? 5 : currentTile.food;
+		double foodTaken = (currentTile.food > 5) ? 5 : currentTile.food;
 		currentTile.food -= foodTaken;
 		food += foodTaken;
 		energy -= 20;
 		if(food > maxFood)
 			food = maxFood;
-		this.hunger++;
 	}
 	
 	public void eat()
 	{
-		float foodEaten = (food != 0) ? ((food > 6) ? 6 : food) : 0;
+		double foodEaten = (food != 0) ? ((food > 6) ? 6 : food) : 0;
 		food -= foodEaten;
 		hunger -= foodEaten;
 		energy -= 5;
@@ -198,7 +197,7 @@ public class Jerry
 	{
 		mutate(0.2f);
 	}
-	void mutate(float value)
+	void mutate(double value)
 	{
 		brain.mutate(value);
 	}
