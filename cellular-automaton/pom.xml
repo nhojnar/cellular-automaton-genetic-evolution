@@ -5,7 +5,7 @@
 
 	<groupId>com.hojnar.app</groupId>
 	<artifactId>cellular-automaton</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>cellular-automaton</name>
@@ -24,9 +24,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.ejml</groupId>
-			<artifactId>ejml-all</artifactId>
-			<version>0.37.1</version>
+			<groupId>com.hojnar.app</groupId>
+			<artifactId>neuralnetwork</artifactId>
+			<version>0.2.3</version>
 		</dependency>
 	</dependencies>
 </project>

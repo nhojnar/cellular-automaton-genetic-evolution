@@ -27,5 +27,6 @@
 	<classpathentry kind="src" path="/GUI"/>
 	<classpathentry kind="src" path="/MapHandler"/>
 	<classpathentry kind="src" path="/neuralnetwork"/>
+	<classpathentry kind="src" path="/Neural Network"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
