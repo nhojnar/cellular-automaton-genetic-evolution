@@ -22,9 +22,9 @@ public class App extends PApplet
 	boolean isOpener;
 	boolean run, running, started;
 	
-	double mutateAmount;
-	Slider mutateSlider;
-	Label mutateLabel;
+	double mutateAmount, mutIntensity;
+	Slider mutateSlider, mutIntensitySlider;
+	Label mutateLabel, mutIntensityLabel;
 	
 	ArrayList<Jerry> jerries;
 	ArrayList<Jerry> savedJerries;
@@ -81,7 +81,8 @@ public class App extends PApplet
 				numJerries = 50;
 				generationTickCounter = 0;
 				generationNumber = 0;
-				mutateAmount = 0.1f;
+				mutateAmount = 0.1;
+				mutIntensity = 0.1;
 
 				isOpener = false;
 
@@ -131,8 +132,8 @@ public class App extends PApplet
 		
 		gui.addElements(new GuiElement[] {startButton, stopButton});
 		
-		jerryLabel = new Label(200, 300, 16, "Jerries: " + jerries.size() + "/" + numJerries);
-		generationTickLabel = new Label(200, 320, 16, "Generation Tick: " + generationTickCounter + "/" + generationTicks);
+		jerryLabel = new Label(200, 350, 16, "Jerries: " + jerries.size() + "/" + numJerries);
+		generationTickLabel = new Label(200, 370, 16, "Generation Tick: " + generationTickCounter + "/" + generationTicks);
 		generationNumberLabel = new Label(gui.w/2, gui.h -  140, 38, "Generation " + generationNumber);
 		
 		gui.addElements(new GuiElement[] {jerryLabel, generationTickLabel, generationNumberLabel});
@@ -142,9 +143,11 @@ public class App extends PApplet
 		gui.addElement(mapsButton);
 		
 		mutateSlider = new Slider(20, 240, 160, 0.1f, 0.9f, () -> updateGuiElements(), true);
-		mutateLabel = new Label(100, 225, 14, String.format("Mutation Amount: %.2f", mutateAmount));
+		mutateLabel = new Label(100, 225, 14, String.format("Mutation Rate: %.2f", mutateAmount));
+		mutIntensitySlider = new Slider(20, 300, 160, 0.1f, 0.9f, () -> updateGuiElements(), true);
+		mutIntensityLabel = new Label(100, 285, 14, String.format("Mutation Intensity: %.2f", mutIntensity));
 		
-		gui.addElements(new GuiElement[] {mutateSlider,mutateLabel});
+		gui.addElements(new GuiElement[] {mutateSlider,mutateLabel,mutIntensitySlider,mutIntensityLabel});
 	}
 	
 	public void start()
@@ -177,7 +180,9 @@ public class App extends PApplet
 		generationTickLabel.setLabel("Generation Tick: " + generationTickCounter + "/" + generationTicks);
 		generationNumberLabel.setLabel("Generation " + generationNumber);
 		mutateAmount = mutateSlider.getValue();
-		mutateLabel.setLabel(String.format("Mutation Amount: %.2f", mutateAmount));
+		mutateLabel.setLabel(String.format("Mutation Rate: %.2f", mutateAmount));
+		mutIntensity = mutIntensitySlider.getValue();
+		mutIntensityLabel.setLabel(String.format("Mutation Intensity: %.2f", mutIntensity));
 	}
 	
 	public void draw()
