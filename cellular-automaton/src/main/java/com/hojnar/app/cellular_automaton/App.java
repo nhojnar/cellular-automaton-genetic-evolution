@@ -31,6 +31,14 @@ public class App extends PApplet
 	
 	public static void main(String[] args)
 	{
+		/*
+		SimpleBrain b = new SimpleBrain(4, 5, 2);
+		b.getFirstMatrix().print();
+		b.getSecondMatrix().print();
+		b.mutate(0.8, 0.001);
+		b.getFirstMatrix().print();
+		b.getSecondMatrix().print();
+		*/
 		PApplet.main("com.hojnar.app.cellular_automaton.App");
 	}
 	
@@ -76,21 +84,24 @@ public class App extends PApplet
 			{
 				started = true;
 				map = MapHandler.importMap(mapName.substring(0, mapName.length()-4), this);
-				runsPerFrame = 1;
-				generationTicks = 100;
-				numJerries = 50;
-				generationTickCounter = 0;
-				generationNumber = 0;
-				mutateAmount = 0.1;
-				mutIntensity = 0.1;
-
-				isOpener = false;
-
+				
 				jerries = new ArrayList<Jerry>();
 				savedJerries = new ArrayList<Jerry>();
+				
+				
+				generationTickCounter = 0;
+				generationNumber = 0;
+
+				isOpener = false;
+				
+				setupGui();
+				updateGuiElements();
+
 				randomJerries();
 
-				setupGui();
+
+
+				
 			}
 			else
 			{
@@ -134,7 +145,7 @@ public class App extends PApplet
 		
 		jerryLabel = new Label(200, 350, 16, "Jerries: " + jerries.size() + "/" + numJerries);
 		generationTickLabel = new Label(200, 370, 16, "Generation Tick: " + generationTickCounter + "/" + generationTicks);
-		generationNumberLabel = new Label(gui.w/2, gui.h -  140, 38, "Generation " + generationNumber);
+		generationNumberLabel = new Label(gui.w/2, gui.h -  140, 34, "Generation " + generationNumber);
 		
 		gui.addElements(new GuiElement[] {jerryLabel, generationTickLabel, generationNumberLabel});
 		
@@ -144,8 +155,8 @@ public class App extends PApplet
 		
 		mutateSlider = new Slider(20, 240, 160, 0.1f, 0.9f, () -> updateGuiElements(), true);
 		mutateLabel = new Label(100, 225, 14, String.format("Mutation Rate: %.2f", mutateAmount));
-		mutIntensitySlider = new Slider(20, 300, 160, 0.1f, 0.9f, () -> updateGuiElements(), true);
-		mutIntensityLabel = new Label(100, 285, 14, String.format("Mutation Intensity: %.2f", mutIntensity));
+		mutIntensitySlider = new Slider(20, 300, 160, 0.05f, 0.5f, () -> updateGuiElements(), true);
+		mutIntensityLabel = new Label(100, 285, 14, String.format("Mutation Intensity: %.3f", mutIntensity));
 		
 		gui.addElements(new GuiElement[] {mutateSlider,mutateLabel,mutIntensitySlider,mutIntensityLabel});
 	}
@@ -182,7 +193,7 @@ public class App extends PApplet
 		mutateAmount = mutateSlider.getValue();
 		mutateLabel.setLabel(String.format("Mutation Rate: %.2f", mutateAmount));
 		mutIntensity = mutIntensitySlider.getValue();
-		mutIntensityLabel.setLabel(String.format("Mutation Intensity: %.2f", mutIntensity));
+		mutIntensityLabel.setLabel(String.format("Mutation Intensity: %.3f", mutIntensity));
 	}
 	
 	public void draw()
@@ -280,6 +291,7 @@ public class App extends PApplet
 
 	void nextGeneration(){
 		calculateFitness();
+		//getBest().brain.exportBrain("brain");
 		/*if(export)
 		{
 			Jerry best = savedJerries.get(0);
@@ -292,12 +304,19 @@ public class App extends PApplet
 			export = false;
 		} */
 		jerries.clear();
+		
 		int eliteGroup = floor(savedJerries.size() * .9f);
 		for(int i = savedJerries.size(); i > eliteGroup; i--)
 		{
-			jerries.add(getBest());
+			Jerry j = getBest();
+			jerries.add(j);
+			//Jerry j2 = new Jerry(randomPos(), j.maxHealth, j.maxEnergy, j.brain, this, j.map);
+			//j2.mutate(mutateAmount, mutIntensity);
+			//jerries.add(j2);
 		}
+		
 		int toGet = numJerries - jerries.size();
+		
 		calculateFitness();
 		for (int i = 0; i < toGet; i++){
 			jerries.add(pickOne());
@@ -335,7 +354,7 @@ public class App extends PApplet
 				highestIndex = i;
 			}
 		}
-		Jerry best = savedJerries.remove(highestIndex);
+		Jerry best = savedJerries.get(highestIndex);
 		Jerry child = new Jerry(randomPos(), best.maxHealth, best.maxEnergy, best.brain, this, map);
 		child.mutate(mutateAmount, mutIntensity);
 		return child;

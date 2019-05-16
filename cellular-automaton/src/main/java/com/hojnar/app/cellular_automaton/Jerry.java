@@ -5,7 +5,7 @@ import com.hojnar.app.neuralnetwork.*;
 
 public class Jerry 
 {
-	final int INPUT_NODES = 13, HIDDEN_NODES = 40, OUTPUT_NODES = 7;
+	final int INPUT_NODES = 9, HIDDEN_NODES = 30, OUTPUT_NODES = 7;
 	
 	PVector pos;
 	double health, maxHealth, energy, maxEnergy, hunger, maxHunger, food, maxFood, score;
@@ -83,19 +83,19 @@ public class Jerry
 	    Tile down = this.pos.y != map.grid.get(0).size()-1 ? map.tileAt(this.pos.x, this.pos.y+1) : null;
 	    Tile left = this.pos.x != 0 ? map.tileAt(this.pos.x-1, this.pos.y) : null;
 	    
-	    inputs[0] = this.health /  this.maxHealth;
-	    inputs[1] = this.energy /  this.maxEnergy;
-	    inputs[2] = this.hunger /  this.maxHunger;
-	    inputs[3] = this.food /  this.maxFood;
-	    inputs[4] = this.currentTile.food / this.currentTile.maxFood;
-	    inputs[5] = up != null ? up.food / up.maxFood : 0;
-	    inputs[6] = right != null ? right.food / right.maxFood : 0;
-	    inputs[7] = down != null ? down.food / down.maxFood : 0;
-	    inputs[8] = left != null ? left.food / left.maxFood : 0;
-	    inputs[9] = up != null ? (up.occupied?1:0) : 1;
-	    inputs[10] = right != null ? (right.occupied?1:0) : 1;
-	    inputs[11] = down != null ? (down.occupied?1:0) : 1;
-	    inputs[12] = left != null ? (left.occupied?1:0) : 1;
+	    inputs[0] = (2*this.health /  this.maxHealth) - 1;
+	    inputs[1] = (2*this.energy /  this.maxEnergy) - 1;
+	    inputs[2] = (2*this.hunger /  this.maxHunger) - 1;
+	    inputs[3] = (2*this.food /  this.maxFood) - 1;
+	    inputs[4] = (2*this.currentTile.food / this.currentTile.maxFood) - 1;
+	    inputs[5] = up != null && !up.occupied? (2*up.food / up.maxFood)-1 : -1;
+	    inputs[6] = right != null && !right.occupied ? (2*right.food / right.maxFood)-1 : -1;
+	    inputs[7] = down != null && !down.occupied ? (2*down.food / down.maxFood)-1 : -1;
+	    inputs[8] = left != null && !left.occupied ? (2*left.food / left.maxFood)-1 : -1;
+	    //inputs[9] = up != null ? (up.occupied?1:0) : 1;
+	    //inputs[10] = right != null ? (right.occupied?1:0) : 1;
+	    //inputs[11] = down != null ? (down.occupied?1:0) : 1;
+	    //inputs[12] = left != null ? (left.occupied?1:0) : 1;
 	    //inputs[13] = up != null ? (up.terrainType.terrainInt() / 3.0f) : 0;
 	    //inputs[14] = right != null ? (right.terrainType.terrainInt() / 3.0f) : 0;
 	    //inputs[15] = down != null ? (down.terrainType.terrainInt() / 3.0f) : 0;
